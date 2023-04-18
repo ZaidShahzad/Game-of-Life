@@ -81,7 +81,7 @@ int ROWS;
 int COLS;
 
 // This function prints the board
-void printBoard(std::vector<std::vector<Cell>> board) {
+void printBoard(std::vector<std::vector<Cell>>& board) {
     for(int i = 0; i < board.size(); i++) {
         std::vector<Cell> row = board[i];
         for(int j = 0; j < row.size(); j++) {
@@ -98,20 +98,20 @@ void printBoard(std::vector<std::vector<Cell>> board) {
 
 // This function checks if the rows ("I") that is being used in the for loop in the
 // "getCellLiveNeighborCount" function is in bounds of the board
-bool inBoundsI(int i) {
+bool inBoundsI(int& i) {
     if(i < 0 || i >= ROWS) return false;
     return true;
 }
 
 // This function checks if the cols ("J") that is being used in the for loop in the
 // "getCellLiveNeighborCount" function is in bounds of the board
-bool inBoundsJ(int j) {
+bool inBoundsJ(int& j) {
     if(j < 0 || j >= COLS) return false;
     return true;
 }
 
 // This function gets the cell's live nieghbor count (how many cells around it [1 radius] are alive)
-int getCellLiveNeighborCount(std::vector<std::vector<Cell>> board, Cell cell) {
+int getCellLiveNeighborCount(std::vector<std::vector<Cell>>& board, Cell& cell) {
     int liveNeighborCount = 0;
     int startingI = cell.posI - 1;
     int startingJ = cell.posJ - 1;
@@ -128,7 +128,7 @@ int getCellLiveNeighborCount(std::vector<std::vector<Cell>> board, Cell cell) {
             // We don't want it to do logic on the cell we want it to grab neighbors from
             if(neighbor.equals(cell)) continue;
             if(neighbor.isLive) liveNeighborCount++;
-         }
+        }
     }
     return liveNeighborCount;
 }
@@ -141,7 +141,7 @@ int getCellLiveNeighborCount(std::vector<std::vector<Cell>> board, Cell cell) {
     * Any live cell with two or three live neighbors lives, unchanged, to the next generation.
     * Any dead cell with exactly three live neighbors will come to life (as if by reanimation or birth).
  */
-Cell getUpdatedCell(std::vector<std::vector<Cell>> board, Cell cell) {
+Cell getUpdatedCell(std::vector<std::vector<Cell>>& board, Cell& cell) {
     int liveNieghborCount = getCellLiveNeighborCount(board, cell);
 
     if(cell.isLive) {
@@ -164,7 +164,7 @@ Cell getUpdatedCell(std::vector<std::vector<Cell>> board, Cell cell) {
 
 // This function applies the ruleset to the oldGenBoard that is passed in to return a newGenBoard which
 // contains the new generation cells
-std::vector<std::vector<Cell>> applyRulesetToGeneration(std::vector<std::vector<Cell>> oldGenBoard) {
+std::vector<std::vector<Cell>> applyRulesetToGeneration(std::vector<std::vector<Cell>>& oldGenBoard) {
     std::vector<std::vector<Cell>> newGenBoard;
     for (int i = 0; i < oldGenBoard.size(); i++) {
         std::vector<Cell> oldGenRow = oldGenBoard[i];
